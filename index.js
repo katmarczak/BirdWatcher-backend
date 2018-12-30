@@ -1,0 +1,39 @@
+const config = require('config');
+const mongoose = require('mongoose');
+
+const startUpDebugger = require('debug')('app:startup')
+const helmet = require('helmet');
+const morgan = require('morgan');
+const express = require('express');
+const app = express();
+
+const observationsRouter = require('./routes/observations');
+const usersRouter = require('./routes/users');
+const homeRouter = require('./routes/home')
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(helmet());
+
+if (app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    startUpDebugger('Morgan enabled');
+}
+
+mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
+    .then(() => console.log('Connected to db.'))
+    .catch(error => console.error('Could not connect to db'));
+
+// ROUTES ===============================================================
+app.use('/observations', observationsRouter);
+app.use('/users', usersRouter);
+app.use('/', homeRouter);
+
+// CONFIG ===============================================================
+console.log('App name: ' + config.get('name'));
+
+// START SERVER =========================================================
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => console.log(`Listening on a port ${port}...`));

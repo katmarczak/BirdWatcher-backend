@@ -1,0 +1,6 @@
+{
+    "name": "Bird Watcher",
+    "mail": {
+        "host": "prod-mail-server"
+    }
+}

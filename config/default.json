@@ -1,0 +1,6 @@
+{
+    "name": "Bird Watcher",
+    "mail": {
+        "host": "dev-mail-server"
+    }
+}

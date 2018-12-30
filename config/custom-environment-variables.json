@@ -1,0 +1,5 @@
+{
+    "mail": {
+        "password": "from_env_app_password"
+    }
+}
