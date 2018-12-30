@@ -1,18 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-
-const User = mongoose.model('User', new mongoose.Schema({
-    name: { type: String, required: true, minlength: 3, maxlength: 32 },
-    email: { type: String, required: true },
-    password: { type: String, required: true, minlength: 8 },
-    registeredOn: { type: Date, default: Date.now }
-}));
-
-// FUNCTIONS
-// TODO validateUser() with joi
-
-// ROUTES
+const { User } = require('../models/user');
 
 router.get('/', async (request, response) => {
     const users = await User.find().sort('-registeredOn');
@@ -27,7 +16,7 @@ router.get('/:id', async (request, response) => {
 });
 
 router.post('/', async (request, response) => {
-    // const { error } = validateUser(request.body);
+    // const { error } = User.validate(request.body);
     // if(error) return response.status(400).send(error.details[0].message);
 
     let user = new User({
@@ -41,7 +30,7 @@ router.post('/', async (request, response) => {
 });
 
 router.put('/:id', async (request, response) => {
-    // const { error } = validateUser(request.body);
+    // const { error } = User.validate(request.body);
     // if(error) return response.status(400).send(error.details[0].message);
 
     const user = await User.findOneAndUpdate(request.params.id, {

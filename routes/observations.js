@@ -1,28 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Joi = require('joi');
-
-const Observation = mongoose.model('Observation', new mongoose.Schema({
-    owner: { type: String, required: true },
-    species: { type: String, required: true },
-    date: Date,
-    visible: { type: Boolean, default: true }
-}));
-
-// FUNCTIONS
-
-function validateObservation(observation) {
-    const schema = Joi.object().keys({
-        species: Joi.string().min(3),
-        owner: Joi.string().min(3),
-        visible: Joi.boolean()
-    });
-
-    return Joi.validate(observation, schema);
-}
-
-// ROUTES
+const { Observation, validate } = require('../models/observation');
 
 router.get('/', async (request, response) => {
     const observations = await Observation.find().sort('-date');
@@ -37,7 +16,7 @@ router.get('/:id', async (request, response) => {
 });
 
 router.post('/', async (request, response) => {
-    const { error } = validateObservation(request.body);
+    const { error } = validate(request.body);
     if(error) return response.status(400).send(error.details[0].message);
 
     let newObservation = new Observation({
@@ -51,7 +30,7 @@ router.post('/', async (request, response) => {
 })
 
 router.put('/:id', async (request, response) => {
-    const { error } = validateObservation(request.body);
+    const { error } = validate(request.body);
     if(error) return response.status(400).send(error.details[0].message);
 
     const observation = await Observation.findOneAndUpdate(request.params.id, { 
