@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Observation = require('../models/observation');
+const { Observation } = require('../models/observation');
 const { Species } = require('../models/species');
 const { User } = require('../models/user');
 
