@@ -9,7 +9,8 @@ const app = express();
 
 const observationsRouter = require('./routes/observations');
 const usersRouter = require('./routes/users');
-const homeRouter = require('./routes/home')
+const homeRouter = require('./routes/home');
+const speciesRouter = require('./routes/species');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +27,7 @@ mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
     .catch(error => console.error('Could not connect to db'));
 
 // ROUTES ===============================================================
+app.use('/species', speciesRouter);
 app.use('/observations', observationsRouter);
 app.use('/users', usersRouter);
 app.use('/', homeRouter);

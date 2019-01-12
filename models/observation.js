@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
-const Joi = require('joi');
+const { User, userSchema } = require('./user');
+const { speciesSchema } = require('./species');
 
 const Observation = mongoose.model('Observation', new mongoose.Schema({
-    owner: { type: String, required: true },
-    species: { type: String, required: true },
+    owner: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true },
+    species: { type: speciesSchema, required: true },
     date: Date,
-    visible: { type: Boolean, default: true }
+    exactLocation: { 
+        type: {
+            type: String,
+            enum: ['Point'],
+            default: 'Point'
+        },
+        coordinates: { // longitude, latitude
+            type: [Number],
+            required: false
+        }
+    },
+    town: String,
+    visible: { type: Boolean, default: true },
+    description: String
 }));
 
-function validateObservation(observation) {
-    const schema = Joi.object().keys({
-        species: Joi.string().min(3),
-        owner: Joi.string().min(3),
-        visible: Joi.boolean()
-    });
-
-    return Joi.validate(observation, schema);
-}
-
 module.exports.Observation = Observation;
-module.exports.validate = validateObservation;

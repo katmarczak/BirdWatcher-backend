@@ -16,11 +16,8 @@ router.get('/:id', async (request, response) => {
 });
 
 router.post('/', async (request, response) => {
-    // const { error } = User.validate(request.body);
-    // if(error) return response.status(400).send(error.details[0].message);
-
     let user = new User({
-        name: request.body.name,
+        username: request.body.username,
         email: request.body.email,
         password: request.body.password
     });
@@ -30,9 +27,6 @@ router.post('/', async (request, response) => {
 });
 
 router.put('/:id', async (request, response) => {
-    // const { error } = User.validate(request.body);
-    // if(error) return response.status(400).send(error.details[0].message);
-
     const user = await User.findOneAndUpdate(request.params.id, {
         password: request.body.password
     }, { new: true });
