@@ -11,6 +11,12 @@ const observationsRouter = require('./routes/observations');
 const usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const speciesRouter = require('./routes/species');
+const authRouter = require('./routes/auth');
+
+if(!config.get('jwtPrivateKey')) {
+    console.error('Cannot start app: Environment variable \'jwtPrivateKey\' is not defined');
+    process.exit(1);
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +36,7 @@ mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
 app.use('/species', speciesRouter);
 app.use('/observations', observationsRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 app.use('/', homeRouter);
 
 // CONFIG ===============================================================

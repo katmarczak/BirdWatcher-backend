@@ -7,7 +7,10 @@ const Observation = mongoose.model('Observation', new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
         required: true },
-    species: { type: speciesSchema, required: true },
+    species: { 
+        type: speciesSchema, 
+        required: true 
+    },
     date: Date,
     exactLocation: { 
         type: {

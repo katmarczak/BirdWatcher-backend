@@ -9,10 +9,13 @@
   "author": "KNecka",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.0.0",
+    "bcrypt": "^3.0.3",
+    "config": "^3.0.1",
     "debug": "^4.1.0",
     "express": "^4.16.4",
     "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^4.17.11",
     "mongoose": "^5.4.1",
     "morgan": "^1.9.1",
     "underscore": "^1.9.1"

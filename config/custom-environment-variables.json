@@ -1,5 +1,4 @@
 {
-    "mail": {
-        "password": "from_env_app_password"
-    }
+    "name": "Bird Watcher",
+    "jwtPrivateKey": "birdwatcher_jwtPrivateKey"
 }
