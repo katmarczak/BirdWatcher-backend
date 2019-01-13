@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const { Species } = require('../models/species');
+const auth = require('../middleware/auth');
 
 router.get('/', async (request, response) => {
     const species = await Species.find();
@@ -15,7 +16,7 @@ router.get('/:id', async (request, response) => {
     response.send(species);
 });
 
-router.post('/', async (request, response) => {
+router.post('/', auth, async (request, response) => {
     let species = new Species({
         commonName: request.body.commonName,
         scientificName: request.body.scientificName
@@ -25,7 +26,7 @@ router.post('/', async (request, response) => {
     response.send(species);
 });
 
-router.put('/:id', async (request, response) => {    
+router.put('/:id', auth, async (request, response) => {    
     const species = await Species.findOneAndUpdate(request.params.id, {
         migratory: request.body.migratory
     }, { new: true });

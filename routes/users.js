@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../models/user');
+const auth = require('../middleware/auth');
 
 router.get('/', async (request, response) => {
     const users = await User.find().sort('-registeredOn');
@@ -33,7 +34,7 @@ router.post('/', async (request, response) => {
     response.send(_.pick(user, ['_id', 'username']));
 });
 
-router.put('/:id', async (request, response) => {
+router.put('/:id', auth, async (request, response) => {
     const user = await User.findOneAndUpdate(request.params.id, {
         password: request.body.password
     }, { new: true });
