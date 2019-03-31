@@ -7,7 +7,7 @@ const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 
 router.get('/', async (request, response) => {
-    const observations = await Observation.find().populate('owner', 'username -_id').sort('species');
+    const observations = await Observation.find().populate('owner', 'username _id').sort('species');
     response.send(observations);
 });
 
