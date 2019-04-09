@@ -25,7 +25,7 @@ router.get('/:token', async (request, response) => {
 
     try {
         jwt.verify(token, config.get('jwtPrivateKey'));
-        return response.send(user);
+        return response.status(200).send('OK');
     } catch (exception) {
         return response.status(400).send('Invalid token.');
     }
