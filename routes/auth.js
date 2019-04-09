@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../models/user');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 router.post('/', async (request, response) => {
     let user = await User.findOne({ email: request.body.email }); // or username?
@@ -14,7 +16,19 @@ router.post('/', async (request, response) => {
 
     const token = user.generateAuthToken();
     
-    response.send(token);
+    return response.send(token);
+});
+
+router.get('/:token', async (request, response) => {
+    const token = request.params.token;
+    if(!token) return response.status(400).send('No token provided')
+
+    try {
+        jwt.verify(token, config.get('jwtPrivateKey'));
+        return response.send(user);
+    } catch (exception) {
+        return response.status(400).send('Invalid token.');
+    }
 });
 
 module.exports = router;
