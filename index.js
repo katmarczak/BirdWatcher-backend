@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const speciesRouter = require('./routes/species');
 const authRouter = require('./routes/auth');
+const errorHandler = require('./middleware/error');
 
 if(!config.get('jwtPrivateKey')) {
     console.error('Cannot start app: Environment variable \'jwtPrivateKey\' is not defined');
@@ -45,6 +46,8 @@ app.use('/observations', observationsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/', homeRouter);
+
+app.use(errorHandler);
 
 // CONFIG ===============================================================
 console.log('App name: ' + config.get('name'));

@@ -6,8 +6,8 @@ const { User } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-router.post('/', async (request, response) => {
-    let user = await User.findOne({ email: request.body.email }); // or username?
+router.post('/', asyncMiddleware(async (request, response) => {
+    let user = await User.findOne({ email: request.body.email });
     if(!user) return response.status(400).send('Invalid email or password');
 
     const isValid = await bcrypt.compare(request.body.password, user.password);
@@ -17,7 +17,7 @@ router.post('/', async (request, response) => {
     const token = user.generateAuthToken();
     
     return response.send(token);
-});
+}));
 
 router.get('/:token', async (request, response) => {
     const token = request.params.token;
