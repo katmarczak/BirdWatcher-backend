@@ -13,7 +13,7 @@ router.get('/', asyncMiddleware(async (request, response) => {
 }));
 
 router.get('/:id', asyncMiddleware(async (request, response) => {
-    const observation = await Observation.findById(request.params.id);
+    const observation = await Observation.findById(request.params.id).populate('owner', 'username _id');
 
     if(!observation) return response.status(404).send('Not found!')
     response.send(observation);
