@@ -5,6 +5,7 @@ const router = express.Router();
 const { User } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const asyncMiddleware = require('../middleware/async');
 
 router.post('/', asyncMiddleware(async (request, response) => {
     let user = await User.findOne({ email: request.body.email });
