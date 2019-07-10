@@ -30,7 +30,8 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
         owner: request.body.userId,
         species: species,
         exactLocation: request.body.exactLocation,
-        date: request.body.date
+        date: request.body.date,
+        visible: request.body.visible
     });
     newObservation = await newObservation.save();        
 
