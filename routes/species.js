@@ -29,7 +29,7 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
 
 router.put('/:id', auth, asyncMiddleware(async (request, response) => {    
     const species = await Species.findOneAndUpdate(request.params.id, {
-        migratory: request.body.migratory
+        //field: request.body.value
     }, { new: true });
     if(!species) reponse.status(404).send('Species not found');
 

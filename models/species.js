@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 const speciesSchema = new mongoose.Schema({
     commonName: { type: String, required: true },
     scientificName: { type: String, required: true },
-    order: String,
-    redlistCategory: String,
-    migratory: Boolean
+    statusPL: String,
+    AERCcategoryPL: String
 });
 
 const Species = mongoose.model('Species', speciesSchema);
