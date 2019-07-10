@@ -1,0 +1,76 @@
+Dromaius novaehollandiae	emu	E	x
+Dendrocygna bicolor 	drzewica dwubarwna	E	x
+Dendrocygna arcuata	drzewica wędrowna	E	x
+Coscoroba coscoroba	koskoroba	E	x
+Cygnus melancoryphus	łabędź czarnoszyi	E	x
+Cygnus atratus 	łabędź czarny	E	x
+Cygnus buccinator	łabędź trąbiący	E	x
+Anser indicus 	gęś tybetańska	D	[Z]
+Anser caerulescens 	śnieżyca duża	D	[Z]
+Anser rossii	śnieżyca mała	D	[z]
+Anser canagicus 	śnieżyca cesarska	E	x
+Branta hutchinsii 	bernikla północna	D	[Z]
+Bucephala albeola 	gągołek	D	[z]
+Bucephala islandica	sierpiec	D	[z]
+Lophodytes cucullatus 	kapturnik	D	[Z]
+Tadorna radjah 	kazarka nadobna	E	x
+Netta peposaca	hełmiatka różowodzioba	E	x
+Anas cyanoptera	cynamonka	E	x
+Anas falcata 	czuprynka	D	[z]
+Anas zonorhyncha	kaczka chińska	E	x
+Anas poecilorhyncha	kaczka pstrodzioba	E	x
+Anas sibilatrix	świstun chilijski	E	x
+Anas castanea 	cyraneczka kasztanowata	E	x
+Anas bahamensis 	rożeniec białolicy	E	x
+Anas flavirostris 	cyraneczka żółtodzioba	E	x
+Aix sponsa 	karolinka	E	x
+Oressochen melanopterus	grzywoszyjka andyjska	E	x
+Chenonetta jubata 	grzywienka	E	x
+Callonetta leucophrys 	cudokaczka	E	x
+Syrmaticus reevesii	bażant królewski	E	x
+Chrysolophus pictus 	bażant złocisty	E	x
+Chrysolophus amherstiae	bażant diamentowy	E	x
+Lophura nycthemera	kiściec srebrzysty	E	x
+Phoenicopterus ruber	flaming karmazynowy	E	x
+Phoenicopterus minor 	flaming mały	E	x
+Phoenicopterus chilensis 	flaming chilijski	E	x
+Streptopelia roseogrisea 	cukrówka	E	x
+Oena capensis 	turkaweczka czarnogardła	E	x
+Geopelia cuneata 	gołąbek diamentowy	E	x
+Porphyrio porphyrio 	modrzyk	D	[z]
+Porphyrio poliocephalus	modrzyk siwogłowy	E	x
+Vanellus spinosus	czajka szponiasta	D	[z]
+Pluvianus aegyptius 	pijawnik	E	x
+Eudyptes chrysocome	pingwin skalny	E	x
+Mycteria ibis	dławigad afrykański	E	x
+Ciconia abdimii 	bocian białobrzuchy	E	x
+Pelecanus rufescens 	pelikan mały	E	x
+Geronticus eremita  ibis grzywiasty	E	x
+Threskiornis aethiopicus 	ibis czczony	E	x
+Eudocimus ruber ibis szkarłatny	E	x
+Platalea alba	warzęcha czerwonolica	E	x
+Cathartes aura 	sępnik różowogłowy	E	x
+Haliaeetus leucocephalus	bielik amerykański	E	x
+Haliaeetus pelagicus	bielik olbrzymi	E	x
+Parabuteo unicinctus	myszołowiec towarzyski	E	x
+Gyps rueppelli	sęp plamisty	E	x
+Merops nubicus 	żołna szkarłatna	E	x
+Caracara plancus	karakara czarnobrzucha	E	x
+Falco biarmicus 	raróg górski	E	x
+Myiopsitta monachus mnicha	E	x
+Cyanoliseus patagonus 	patagonka	E	x
+Polytelis anthopeplus	księżniczka słoneczna	E	x
+Psittacula eupatria 	aleksandretta większa	E	x
+Psittacula derbiana	aleksandretta chińska	E	x
+Platycercus eximius	rozella białolica	E	x
+Platycercus elegans	rozella królewska	E	x
+Barnardius zonarius	rozella czarnogłowa	E	x
+Agapornis personatus	nierozłączka czarnogłowa	E	x
+Corvus splendens 	wrona orientalna	E	x
+Bombycilla japonica	jemiołuszka japońska	E	x
+Acridotheres tristis 	majna brunatna	E	x
+Phoenicurus leucocephalus 	pleszka białogłowa	E	x
+Poephila guttata	zeberka	E	x l
+Serinus pusillus    kulczyk królewski	E	x
+Emberiza elegans	trznadel żółtogardły	E	x
+Passerina cyanea	łuszczyk indygowy	D	[z]
