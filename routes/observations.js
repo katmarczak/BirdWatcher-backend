@@ -7,8 +7,15 @@ const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
 
+//TODO: more flexible search
+router.get('/search', asyncMiddleware(async (request, response) => {
+    const observations = await Observation.find({ owner: { _id: request.query.userId }}).populate('owner', 'username _id');
+    if(!observations) return response.status(404).send('Not found!')
+    response.send(observations);
+}));
+
 router.get('/', asyncMiddleware(async (request, response) => {
-    const observations = await Observation.find().populate('owner', 'username _id').sort('species');
+    const observations = await Observation.find().populate('owner', 'username _id').sort('date');
     response.send(observations);
 }));
 
