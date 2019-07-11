@@ -9,20 +9,20 @@ const asyncMiddleware = require('../middleware/async');
 
 //TODO: more flexible search
 router.get('/search', asyncMiddleware(async (request, response) => {
-    const observations = await Observation.find({ owner: { _id: request.query.userId }}).populate('owner', 'username _id');
+    const observations = await Observation.find({ owner: { _id: request.query.userId }, visible: true}).populate('owner', 'username _id');
     if(!observations) return response.status(404).send('Not found!')
     response.send(observations);
 }));
 
 router.get('/', asyncMiddleware(async (request, response) => {
-    const observations = await Observation.find().populate('owner', 'username _id').sort('date');
+    const observations = await Observation.find({ visible: true }).populate('owner', 'username _id').sort('date');
     response.send(observations);
 }));
 
 router.get('/:id', asyncMiddleware(async (request, response) => {
     const observation = await Observation.findById(request.params.id).populate('owner', 'username _id');
 
-    if(!observation) return response.status(404).send('Not found!')
+    if(!observation || !observation.visible) return response.status(404).send('Not found!')
     response.send(observation);
 }));
 
