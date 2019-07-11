@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
 
 router.get('/', asyncMiddleware(async (request, response) => {
-    const users = await User.find().sort('-registeredOn');
+    const users = await User.find().select('-password -email').sort('-registeredOn');
     response.send(users);
 }));
 
@@ -16,7 +16,7 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
     const user = await User.findById(request.params.id);
 
     if(!user) return response.status(404).send('Not found!');
-    response.send(user);
+    response.send(_.pick(user, ['_id', 'username', 'registeredOn']));
 }));
 
 router.post('/', asyncMiddleware(async (request, response) => {
@@ -41,7 +41,7 @@ router.put('/:id', auth, asyncMiddleware(async (request, response) => {
     }, { new: true });
     if(!user) reponse.status(404).send('User not found');
 
-    response.send(user);
+    response.send(_.pick(user, ['_id', 'username', 'registeredOn']));
 }));
 
 module.exports = router;
