@@ -7,34 +7,52 @@ const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
 
-//TODO: more flexible search
+router.get('/test', asyncMiddleware(async (request, response) => {
+    const filter = { 'owner.username': 'somethingsomething', $or: [{ 'species.commonName': /.*test.*/i }, { 'species.scientificName': { $regex: /.*test.*/i } }]};
+    const obs = await Observation.find(filter);
+    response.send(obs);
+}));
+
 router.get('/search', asyncMiddleware(async (request, response) => {
-    const observations = await Observation.find({ owner: { _id: request.query.userId }, visible: true}).populate('owner', 'username _id');
-    if(!observations) return response.status(404).send('Not found!')
+    const filter = buildFilter(request.query);
+    const observations = await Observation.find(filter);
+    if (!observations) return response.status(404).send('Not found!')
     response.send(observations);
 }));
 
+// TODO search with date/location
+function buildFilter(query) {
+    let filter = { visible: true };
+    if (query.userId) filter['owner._id'] = { _id: query.userId };
+    else if (query.username) filter['owner.username'] = { username: query.username };
+    if (query.species) {
+        const speciesRegExp = new RegExp(`.*${query.species}.*`, 'i');
+        filter.$or = [{ 'species.commonName': { $regex: speciesRegExp } }, { 'species.scientificName': { $regex: speciesRegExp } }];
+    }
+    return filter;
+}
+
 router.get('/', asyncMiddleware(async (request, response) => {
-    const observations = await Observation.find({ visible: true }).populate('owner', 'username _id').sort('date');
+    const observations = await Observation.find({ visible: true }).sort('date');
     response.send(observations);
 }));
 
 router.get('/:id', asyncMiddleware(async (request, response) => {
-    const observation = await Observation.findById(request.params.id).populate('owner', 'username _id');
+    const observation = await Observation.findById(request.params.id);
 
     if(!observation || !observation.visible) return response.status(404).send('Not found!')
     response.send(observation);
 }));
 
 router.post('/', auth, asyncMiddleware(async (request, response) => {
-    let owner = await User.findById(request.body.userId);
+    const owner = await User.findById(request.body.userId);
     if(!owner) return response.status(400).send('Invalid user id'); // TODO check if own id
     
-    let species = await Species.findById(request.body.speciesId);
+    const species = await Species.findById(request.body.speciesId);
     if(!species) return response.status(400).send('Invalid species');
 
     let newObservation = new Observation({
-        owner: request.body.userId,
+        owner: { _id: _id, username: username },
         species: species,
         exactLocation: request.body.exactLocation,
         date: request.body.date,
