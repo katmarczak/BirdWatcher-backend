@@ -45,14 +45,14 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
 }));
 
 router.post('/', auth, asyncMiddleware(async (request, response) => {
-    const owner = await User.findById(request.body.userId);
+    const owner = await User.findById(request.user._id);
     if(!owner) return response.status(400).send('Invalid user id'); // TODO check if own id
     
     const species = await Species.findById(request.body.speciesId);
     if(!species) return response.status(400).send('Invalid species');
 
     let newObservation = new Observation({
-        owner: { _id: _id, username: username },
+        owner: owner,
         species: species,
         exactLocation: request.body.exactLocation,
         date: request.body.date,
