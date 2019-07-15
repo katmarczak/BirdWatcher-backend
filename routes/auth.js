@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const express = require('express');
-const mongoose = require('mongoose');
+const _ = require('lodash');
 const router = express.Router();
 const { User } = require('../models/user');
 const jwt = require('jsonwebtoken');
@@ -8,7 +8,7 @@ const config = require('config');
 const asyncMiddleware = require('../middleware/async');
 
 router.post('/', asyncMiddleware(async (request, response) => {
-    let user = await User.findOne({ email: request.body.email });
+    const user = await User.findOne({ email: request.body.email });
     if(!user) return response.status(400).send('Invalid email or password');
 
     const isValid = await bcrypt.compare(request.body.password, user.password);
@@ -17,7 +17,7 @@ router.post('/', asyncMiddleware(async (request, response) => {
 
     const token = user.generateAuthToken();
     
-    return response.send(token);
+    return response.send({ token: token, user: _.pick(user, ['_id', 'username']) });
 }));
 
 router.get('/:token', async (request, response) => {
