@@ -37,16 +37,19 @@ router.get('/', asyncMiddleware(async (request, response) => {
     response.send(observations);
 }));
 
-router.get('/:id', asyncMiddleware(async (request, response) => {
-    const observation = await Observation.findById(request.params.id);
-
-    if(!observation || !observation.visible) return response.status(404).send('Not found!')
+router.get('/:id', auth, asyncMiddleware(async (request, response) => {
+    let observation = await Observation.findById(request.params.id).lean();
+    if(!observation || !observation.visible) return response.status(404).send('Not found!');
+    if(request.user && request.user._id == observation.owner._id) {
+        observation.editable = true;
+        return response.send(observation);
+    }
     response.send(observation);
 }));
 
 router.post('/', auth, asyncMiddleware(async (request, response) => {
     const owner = await User.findById(request.user._id);
-    if(!owner) return response.status(400).send('Invalid user id'); // TODO check if own id
+    if(!owner) return response.status(400).send('Invalid user id');
     
     const species = await Species.findById(request.body.speciesId);
     if(!species) return response.status(400).send('Invalid species');
