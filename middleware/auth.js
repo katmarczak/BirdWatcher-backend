@@ -9,7 +9,7 @@ function auth(request, response, next) {
         request.user = jwt.verify(token, config.get('jwtPrivateKey'));
         next();
     } catch (exception) {
-        response.status(400).send('Invalid token.');
+        response.status(401).send('Unauthorized');
     }
 }
 

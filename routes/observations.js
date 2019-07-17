@@ -1,10 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
 const { Observation } = require('../models/observation');
 const { Species } = require('../models/species');
 const { User } = require('../models/user');
 const auth = require('../middleware/auth');
+const checkuser = require('../middleware/checkuser');
 const asyncMiddleware = require('../middleware/async');
 
 router.get('/test', asyncMiddleware(async (request, response) => {
@@ -37,7 +37,7 @@ router.get('/', asyncMiddleware(async (request, response) => {
     response.send(observations);
 }));
 
-router.get('/:id', auth, asyncMiddleware(async (request, response) => {
+router.get('/:id', checkuser, asyncMiddleware(async (request, response) => {
     let observation = await Observation.findById(request.params.id).lean();
     if(!observation || !observation.visible) return response.status(404).send('Not found!');
     if(request.user && request.user._id == observation.owner._id) {
