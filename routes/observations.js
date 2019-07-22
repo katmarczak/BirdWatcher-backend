@@ -67,12 +67,17 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
 }));
 
 router.put('/:id', auth, asyncMiddleware(async (request, response) => {
-    const observation = await Observation.findOneAndUpdate(request.params.id, {
-        visible: request.body.visible
-    }, { new: true });
-    if(!observation) return response.status(404).send('Not found!');
+    const conditions = { _id: request.params.id, 'owner._id': request.user._id };
+    const species = await Species.findById(request.body.speciesId);
+    const updateData = {
+        species: species,
+        exactLocation: request.body.exactLocation,
+        date: request.body.date
+    };
+    const updatedObservation = await Observation.findOneAndUpdate(conditions, updateData, { new: true });
+    if(!updatedObservation) return response.status(404).send('Not found!');
 
-    response.send(observation);
+    response.send(updatedObservation);
 }));
 
 router.delete('/:id', auth, asyncMiddleware(async (request, response) => {
