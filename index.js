@@ -12,7 +12,7 @@ const usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const speciesRouter = require('./routes/species');
 const authRouter = require('./routes/auth');
-const errorHandler = require('./middleware/error');
+const checkUser = require('./middleware/checkUser');
 
 if(!config.get('jwtPrivateKey')) {
     console.error('Cannot start app: Environment variable \'jwtPrivateKey\' is not defined');
@@ -37,9 +37,8 @@ if (app.get('env') === 'development') {
     startUpDebugger('Morgan enabled');
 }
 
-mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
-    .then(() => console.log('Connected to db.'))
-    .catch(error => console.error('Could not connect to db'));
+// CUSTOM MIDDLEWARE ====================================================
+app.use(checkUser);
 
 // ROUTES ===============================================================
 app.use('/species', speciesRouter);
@@ -48,7 +47,10 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/', homeRouter);
 
-//app.use(errorHandler);
+// DB CONNECTION ========================================================
+mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
+    .then(() => console.log('Connected to db.'))
+    .catch(error => console.error('Could not connect to db'));
 
 // CONFIG ===============================================================
 console.log('App name: ' + config.get('name'));
