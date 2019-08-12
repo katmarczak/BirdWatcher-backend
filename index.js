@@ -8,6 +8,7 @@ const express = require('express');
 const app = express();
 
 const observationsRouter = require('./routes/observations');
+const commentsRouter = require('./routes/comments');
 const usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const speciesRouter = require('./routes/species');
@@ -43,6 +44,7 @@ app.use(checkUser);
 // ROUTES ===============================================================
 app.use('/species', speciesRouter);
 app.use('/observations', observationsRouter);
+app.use('/comments', commentsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/', homeRouter);
