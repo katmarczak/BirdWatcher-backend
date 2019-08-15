@@ -9,7 +9,14 @@ const abstractCommentSchema = new mongoose.Schema({
     },
     text: {
         type: String,
-        required: true,
+        required: true
+    },
+    createdOn: {
+        type: Date,
+        required: true
+    },
+    editedOn: {
+        type: Date
     }
 });
 
@@ -25,7 +32,7 @@ const observationCommentSchema = extendSchema(
 
 const ObservationCommentModel = mongoose.model('Observation_Comment', observationCommentSchema);
 
-const IdentificationCommentModel = ObservationCommentModel.discriminator('Identification_Comment1',
+const IdentificationCommentModel = ObservationCommentModel.discriminator('Identification_Comment',
     new mongoose.Schema({
         speciesId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +41,7 @@ const IdentificationCommentModel = ObservationCommentModel.discriminator('Identi
         },
         text: {
             type: String,
-            required: false,
+            required: false
         },
         confirmed: Number,
         denied: Number

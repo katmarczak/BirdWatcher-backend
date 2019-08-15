@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { User, userSchema } = require('./user');
 const { speciesSchema } = require('./species');
 
 const Observation = mongoose.model('Observation', new mongoose.Schema({

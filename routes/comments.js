@@ -17,17 +17,21 @@ router.post('/observation', asyncMiddleware(async (request, response) => {
     if(request.body.speciesId) {
         newComment = new IdentificationComment({
             author: request.body.authorId,
-            text: request.body.authorId.text || '',
+            text: request.body.text,
             observationId: request.body.observationId,
-            speciesId: request.body.observationId
+            speciesId: request.body.observationId,
+            createdOn: Date.now()
         });
     } else {
         newComment = new ObservationComment({
             author: request.body.authorId,
-            text: request.body.authorId.text,
-            observationId: request.body.observationId
+            text: request.body.text,
+            observationId: request.body.observationId,
+            createdOn: Date.now()
         });
     }
+
+    console.log(newComment);
 
     const savedComment = await newComment.save();
     response.send(savedComment);
