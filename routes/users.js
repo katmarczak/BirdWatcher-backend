@@ -1,11 +1,24 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
+
+const multer = require('multer');
+const avatarsStorage = multer.diskStorage({
+    destination: function(request, file, callback) {
+        callback(null, 'uploads/avatars');
+    },
+    filename: function(request, file, callback) {
+        callback(null, file.originalname);
+    }
+})
+const avatarUploadDir = multer({ 
+    storage: avatarsStorage,
+    limits: { fileSize: 2e6 }
+});
 
 router.get('/', asyncMiddleware(async (request, response) => {
     const users = await User.find().select('-password -email').sort('-registeredOn');
@@ -17,6 +30,12 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
 
     if(!user) return response.status(404).send('Not found!');
     response.send(_.pick(user, ['_id', 'username', 'registeredOn']));
+}));
+
+router.post('/avatar', avatarUploadDir.single('avatar'), asyncMiddleware(async (request, response) => {
+    console.log(typeof request.file);
+    console.log(request.file);
+    response.send('ok?');
 }));
 
 router.post('/', asyncMiddleware(async (request, response) => {
