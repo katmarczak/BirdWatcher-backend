@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const extendSchema = require('../utilities/extendSchema');
 
 const abstractCommentSchema = new mongoose.Schema({
-    author: {
+    authorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true

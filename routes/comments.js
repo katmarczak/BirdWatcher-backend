@@ -8,7 +8,9 @@ router.get('/observation/:id', asyncMiddleware(async (request, response) => {
     const idComments = await IdentificationComment.find({observationId: request.params.id}).lean();
     const obsComments = await ObservationComment.find({observationId: request.params.id}).lean();
 
-    response.send({ idComments: idComments, obsComments: obsComments});
+    const comments = [].concat(idComments, obsComments);
+
+    response.send(comments);
 }));
 
 router.post('/observation', asyncMiddleware(async (request, response) => {
@@ -16,7 +18,7 @@ router.post('/observation', asyncMiddleware(async (request, response) => {
 
     if(request.body.speciesId) {
         newComment = new IdentificationComment({
-            author: request.body.authorId,
+            authorId: request.body.authorId,
             text: request.body.text,
             observationId: request.body.observationId,
             speciesId: request.body.observationId,
@@ -24,7 +26,7 @@ router.post('/observation', asyncMiddleware(async (request, response) => {
         });
     } else {
         newComment = new ObservationComment({
-            author: request.body.authorId,
+            authorId: request.body.authorId,
             text: request.body.text,
             observationId: request.body.observationId,
             createdOn: Date.now()
