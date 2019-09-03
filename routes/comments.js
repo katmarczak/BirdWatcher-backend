@@ -8,7 +8,7 @@ const { User } = require('../models/user');
 
 router.get('/search', asyncMiddleware(async (request, response) => {
     const filter = buildFilter(request.query);
-    const comments = await ObservationComment.find(filter);
+    const comments = await ObservationComment.find(filter).sort('createdOn');
     response.send(comments);
 }));
 
