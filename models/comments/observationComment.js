@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const extendSchema = require('../../utilities/extendSchema');
 const CommentSchema = require('./commentSchema');
 
-const options = { discriminatorKey: 'type' };
-
 const observationCommentSchema = extendSchema(CommentSchema, {
     observationId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +20,7 @@ const IdentificationComment = ObservationComment.discriminator('Identification_C
             required: true
         }
     },
-    options));
+    { discriminatorKey: 'type' }));
 
 module.exports.ObservationComment = ObservationComment;
 module.exports.IdentificationComment = IdentificationComment;

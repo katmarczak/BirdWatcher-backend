@@ -1,8 +1,10 @@
 const express = require('express');
+const auth = require('../middleware/auth');
+const asyncMiddleware = require('../middleware/async');
 const router = express.Router();
 const { ObservationComment } = require('../models/comments/observationComment');
 const { IdentificationComment } = require('../models/comments/observationComment');
-const asyncMiddleware = require('../middleware/async');
+const { User } = require('../models/user');
 
 router.get('/search', asyncMiddleware(async (request, response) => {
     const filter = buildFilter(request.query);
@@ -21,12 +23,15 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
     response.send(comment);
 }));
 
-router.post('/', asyncMiddleware(async (request, response) => {
+router.post('/', auth, asyncMiddleware(async (request, response) => {
+    const author = await User.findById(request.user._id);
+    if(!author) return response.status(400).send('Invalid user id');
+
     let newComment;
 
     if(request.body.speciesId) {
         newComment = new IdentificationComment({
-            authorId: request.body.authorId,
+            author: author,
             text: request.body.text,
             observationId: request.body.observationId,
             speciesId: request.body.observationId,
@@ -34,7 +39,7 @@ router.post('/', asyncMiddleware(async (request, response) => {
         });
     } else {
         newComment = new ObservationComment({
-            authorId: request.body.authorId,
+            author: author,
             text: request.body.text,
             observationId: request.body.observationId,
             createdOn: Date.now()
