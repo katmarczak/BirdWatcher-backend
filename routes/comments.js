@@ -1,14 +1,20 @@
 const express = require('express');
 const auth = require('../middleware/auth');
+const checkuser = require('../middleware/checkuser');
 const asyncMiddleware = require('../middleware/async');
 const router = express.Router();
 const { ObservationComment } = require('../models/comments/observationComment');
 const { IdentificationComment } = require('../models/comments/observationComment');
 const { User } = require('../models/user');
 
-router.get('/search', asyncMiddleware(async (request, response) => {
+router.get('/search', checkuser, asyncMiddleware(async (request, response) => {
     const filter = buildFilter(request.query);
-    const comments = await ObservationComment.find(filter).sort('createdOn');
+    const comments = await ObservationComment.find(filter).sort('createdOn').lean();
+    comments.forEach((comment) => {
+        if(request.user && request.user._id == comment.author._id) {
+            comment.editable = true;
+        }
+    });
     response.send(comments);
 }));
 
