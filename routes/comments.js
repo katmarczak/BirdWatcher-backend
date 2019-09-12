@@ -25,7 +25,7 @@ function buildFilter(query) {
 }
 
 router.get('/:id', asyncMiddleware(async (request, response) => {
-    const comment = await Comment.findById(request.params.id).lean();
+    const comment = await ObservationComment.findById(request.params.id).lean();
     response.send(comment);
 }));
 
@@ -54,6 +54,23 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
 
     const savedComment = await newComment.save();
     response.send(savedComment);
+}));
+
+router.put('/:id', auth, asyncMiddleware(async (request, response) => {
+    filter = { '_id': request.params.id, 'author._id': request.user._id }
+    const updateData = { text: request.body.text };
+    const updatedComment = await ObservationComment.findOneAndUpdate(filter, updateData, { new: true });
+    if(!updatedComment) return response.status(404).send('Not found!');
+
+    response.send(updatedComment);
+}));
+
+router.delete('/:id', auth, asyncMiddleware(async (request, response) => {
+    filter = { '_id': request.params.id, 'author._id': request.user._id }
+    const comment = await ObservationComment.findOneAndDelete(filter);
+    if(!comment) return response.status(404).send('Not found!');
+
+    response.send(comment);
 }));
 
 module.exports = router;

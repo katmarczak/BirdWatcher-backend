@@ -67,14 +67,14 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
 }));
 
 router.put('/:id', auth, asyncMiddleware(async (request, response) => {
-    const conditions = { _id: request.params.id, 'owner._id': request.user._id };
+    const filter = { _id: request.params.id, 'owner._id': request.user._id };
     const species = await Species.findById(request.body.speciesId);
     const updateData = {
         species: species,
         exactLocation: request.body.exactLocation,
         date: request.body.date
     };
-    const updatedObservation = await Observation.findOneAndUpdate(conditions, updateData, { new: true });
+    const updatedObservation = await Observation.findOneAndUpdate(filter, updateData, { new: true });
     if(!updatedObservation) return response.status(404).send('Not found!');
 
     response.send(updatedObservation);
