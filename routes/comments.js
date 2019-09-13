@@ -58,7 +58,10 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
 
 router.put('/:id', auth, asyncMiddleware(async (request, response) => {
     filter = { '_id': request.params.id, 'author._id': request.user._id }
-    const updateData = { text: request.body.text };
+    const updateData = { 
+        text: request.body.text,
+        editedOn: Date.now()
+    };
     const updatedComment = await ObservationComment.findOneAndUpdate(filter, updateData, { new: true });
     if(!updatedComment) return response.status(404).send('Not found!');
 
