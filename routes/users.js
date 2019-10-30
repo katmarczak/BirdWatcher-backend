@@ -23,10 +23,10 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
     });
 }));
 
-router.post('/avatar', auth, AvatarUploader.single('avatar'), asyncMiddleware(async (request, response) => {
+router.post('/avatar', auth, AvatarUploader, asyncMiddleware(async (request, response) => {
     console.log(typeof request.file);
     console.log(request.file);
-    response.send('ok?');
+    response.status(200).send();
 }));
 
 router.post('/', asyncMiddleware(async (request, response) => {
