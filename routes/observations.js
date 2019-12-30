@@ -6,6 +6,7 @@ const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 const checkuser = require('../middleware/checkuser');
 const asyncMiddleware = require('../middleware/async');
+const { PhotosUploader } = require('../utilities/fileStorage');
 
 router.get('/test', asyncMiddleware(async (request, response) => {
     const filter = { 'owner.username': 'somethingsomething', $or: [{ 'species.commonName': /.*test.*/i }, { 'species.scientificName': { $regex: /.*test.*/i } }]};
@@ -47,10 +48,14 @@ router.get('/:id', checkuser, asyncMiddleware(async (request, response) => {
     response.send(observation);
 }));
 
+router.post('/:id/pics', auth, PhotosUploader.array('photos', 4), function(request, response) {
+    response.status(200).send();
+});
+
 router.post('/', auth, asyncMiddleware(async (request, response) => {
     const owner = await User.findById(request.user._id);
     if(!owner) return response.status(400).send('Invalid user id');
-    
+
     const species = await Species.findById(request.body.speciesId);
     if(!species) return response.status(400).send('Invalid species');
 
@@ -61,6 +66,7 @@ router.post('/', auth, asyncMiddleware(async (request, response) => {
         date: request.body.date,
         visible: request.body.visible
     });
+
     newObservation = await newObservation.save();        
 
     response.send(newObservation);
