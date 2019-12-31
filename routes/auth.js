@@ -8,7 +8,7 @@ const config = require('config');
 const asyncMiddleware = require('../middleware/async');
 
 router.post('/', asyncMiddleware(async (request, response) => {
-    const user = await User.findOne({ email: request.body.email });
+    let user = await User.findOne({ email: request.body.email });
     if(!user) return response.status(400).send('Invalid email or password');
 
     const isValid = await bcrypt.compare(request.body.password, user.password);
@@ -16,6 +16,7 @@ router.post('/', asyncMiddleware(async (request, response) => {
     if(!isValid) return response.status(400).send('Invalid email or password');
 
     const token = user.generateAuthToken();
+    user = await User.findByIdAndUpdate(user._id, { lastLoggedIn: Date.now() })
     
     return response.send({ token: token, user: _.pick(user, ['_id', 'username']) });
 }));
