@@ -1,11 +1,13 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
 const { User } = require('../models/user');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
+
+const { AvatarUploader } = require('../utilities/fileStorage');
+const { getUserAvatarPath } = require('../utilities/fileStorage');
 
 router.get('/', asyncMiddleware(async (request, response) => {
     const users = await User.find().select('-password -email').sort('-registeredOn');
@@ -13,10 +15,18 @@ router.get('/', asyncMiddleware(async (request, response) => {
 }));
 
 router.get('/:id', asyncMiddleware(async (request, response) => {
-    const user = await User.findById(request.params.id);
-
+    const user = await User.findById(request.params.id).select('-password -email').lean();
     if(!user) return response.status(404).send('Not found!');
-    response.send(_.pick(user, ['_id', 'username', 'registeredOn']));
+    getUserAvatarPath(request.params.id, (path) => {
+        user.avatarPath = path;
+        response.send(user);
+    });
+}));
+
+router.post('/avatar', auth, AvatarUploader, asyncMiddleware(async (request, response) => {
+    console.log(typeof request.file);
+    console.log(request.file);
+    response.status(200).send();
 }));
 
 router.post('/', asyncMiddleware(async (request, response) => {
