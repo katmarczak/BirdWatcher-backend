@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 const checkuser = require('../middleware/checkuser');
 const asyncMiddleware = require('../middleware/async');
 const { PhotosUploader } = require('../utilities/fileStorage');
+const { getObservationPhotoPath } = require('../utilities/fileStorage');
 
 router.get('/test', asyncMiddleware(async (request, response) => {
     const filter = { 'owner.username': 'somethingsomething', $or: [{ 'species.commonName': /.*test.*/i }, { 'species.scientificName': { $regex: /.*test.*/i } }]};
@@ -43,8 +44,9 @@ router.get('/:id', checkuser, asyncMiddleware(async (request, response) => {
     if(!observation || !observation.visible) return response.status(404).send('Not found!');
     if(request.user && request.user._id == observation.owner._id) {
         observation.editable = true;
-        return response.send(observation);
     }
+    const photoPath = await getObservationPhotoPath(request.params.id, observation.owner._id);
+    observation.photoPath = photoPath;
     response.send(observation);
 }));
 

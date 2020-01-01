@@ -17,10 +17,9 @@ router.get('/', asyncMiddleware(async (request, response) => {
 router.get('/:id', asyncMiddleware(async (request, response) => {
     const user = await User.findById(request.params.id).select('-password -email').lean();
     if(!user) return response.status(404).send('Not found!');
-    getUserAvatarPath(request.params.id, (path) => {
-        user.avatarPath = path;
-        response.send(user);
-    });
+    const avatarPath = await getUserAvatarPath(request.params.id);
+    user.avatarPath = avatarPath;
+    response.send(user);
 }));
 
 router.post('/avatar', auth, AvatarUploader, asyncMiddleware(async (request, response) => {

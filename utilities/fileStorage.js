@@ -18,10 +18,6 @@ function createObservationPhotosUploader() {
             console.log(path);
             fs.ensureDirSync(path);
             callback(null, path);
-            // fs.ensureDir(path, error => {
-            //     if (error) return console.error(error);
-            //     callback(null, path);
-            // });
         },
         filename: function (request, file, callback) {
             callback(null, `${file.originalname}`);
@@ -62,25 +58,36 @@ function createAvatarUploader() {
     return avatarUploader.single('avatar');
 }
 
-function getUserAvatarPath(userId, callback) {
-    fs.readdir(`${baseFolder}/images/user_photos/${userId}/avatar`, { withFileTypes: true },
-        function (error, filenames) {
-            if (error) {
-                console.log(error);
-                return callback(undefined);
-            }
+function getUserAvatarPath(userId) {
+    return fs.readdir(`${baseFolder}/images/user_photos/${userId}/avatar`, { withFileTypes: true })
+        .then((filenames) => {
             if (filenames[0]) {
-                let filename = filenames[0];
-                return callback(`images/user_photos/${userId}/avatar/${filename}`);
+                const filename = filenames[0];
+                return `images/user_photos/${userId}/avatar/${filename}`;
             } else {
-                return callback(undefined);
+                return undefined;
             }
-        });
+        })
+        .catch((error) => console.log(error));
+}
+
+function getObservationPhotoPath(observationId, ownerId) {
+    return fs.readdir(`${baseFolder}/images/user_photos/${ownerId}/observations/${observationId}`, { withFileTypes: true })
+        .then((filenames) => {
+            if (filenames[0]) {
+                const filename = filenames[0];
+                return `images/user_photos/${ownerId}//observations/${observationId}/${filename}`;
+            } else {
+                return undefined;
+            }
+        })
+        .catch((error) => console.log(error));
 }
 
 const AvatarUploader = createAvatarUploader();
 const ObservationPhotosUploader = createObservationPhotosUploader();
 
 module.exports.AvatarUploader = AvatarUploader;
-module.exports.getUserAvatarPath = getUserAvatarPath;
 module.exports.PhotosUploader = ObservationPhotosUploader;
+module.exports.getUserAvatarPath = getUserAvatarPath;
+module.exports.getObservationPhotoPath = getObservationPhotoPath;
