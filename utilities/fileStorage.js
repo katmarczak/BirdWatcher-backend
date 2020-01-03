@@ -84,6 +84,17 @@ function getObservationPhotoPath(observationId, ownerId) {
         .catch((error) => console.log(error));
 }
 
+function removeObservationFiles(observationId, ownerId) {
+    const path = `${baseFolder}/images/user_photos/${ownerId}/observations/${observationId}`;
+    fs.remove(path)
+        .then(() => { 
+            console.log(`Successfully removed dir: ${baseFolder}/images/user_photos/${ownerId}/observations/${observationId}`)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 const AvatarUploader = createAvatarUploader();
 const ObservationPhotosUploader = createObservationPhotosUploader();
 
@@ -91,3 +102,4 @@ module.exports.AvatarUploader = AvatarUploader;
 module.exports.PhotosUploader = ObservationPhotosUploader;
 module.exports.getUserAvatarPath = getUserAvatarPath;
 module.exports.getObservationPhotoPath = getObservationPhotoPath;
+module.exports.removeObservationFiles = removeObservationFiles;

@@ -8,6 +8,7 @@ const checkuser = require('../middleware/checkuser');
 const asyncMiddleware = require('../middleware/async');
 const { PhotosUploader } = require('../utilities/fileStorage');
 const { getObservationPhotoPath } = require('../utilities/fileStorage');
+const { removeObservationFiles } = require('../utilities/fileStorage');
 
 router.get('/test', asyncMiddleware(async (request, response) => {
     const filter = { 'owner.username': 'somethingsomething', $or: [{ 'species.commonName': /.*test.*/i }, { 'species.scientificName': { $regex: /.*test.*/i } }]};
@@ -89,10 +90,14 @@ router.put('/:id', auth, asyncMiddleware(async (request, response) => {
 }));
 
 router.delete('/:id', auth, asyncMiddleware(async (request, response) => {
-    const observation = await Observation.findOneAndDelete(request.params.id);
-    if(!observation) return response.status(404).send('Not found!');
+    const observation = await Observation.findOneAndDelete({ '_id': request.params.id, 'owner._id': request.user._id});
+    if(!observation) {
+        return response.status(404).send('Not found!');
+    } else {
+        removeObservationFiles(observation._id, observation.owner._id);
+    }
 
-    response.send(observation);
+    response.status(200).send();
 }));
 
 module.exports = router;
