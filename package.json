@@ -9,6 +9,7 @@
   "author": "KNecka",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.0.0",
     "bcrypt": "^3.0.3",
     "config": "^3.0.1",
     "debug": "^4.1.0",
