@@ -1,4 +1,5 @@
 {
-    "name": "Bird Watcher",
-    "jwtPrivateKey": "doesnt_have_to_be_stored_in_machine!"
+    "name": "Bird Watcher test",
+    "jwtPrivateKey": "doesnt_have_to_be_stored_in_machine!",
+    "dbString": "mongodb://localhost/birdwatcher_test"
 }

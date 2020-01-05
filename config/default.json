@@ -1,4 +1,5 @@
 {
     "name": "Bird Watcher",
-    "jwtPrivateKey": ""
+    "jwtPrivateKey": "",
+    "dbString": "mongodb://localhost/birdwatcher"
 }

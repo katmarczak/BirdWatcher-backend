@@ -1,5 +1,4 @@
 const config = require('config');
-const mongoose = require('mongoose');
 
 const startUpDebugger = require('debug')('app:startup')
 const helmet = require('helmet');
@@ -50,9 +49,7 @@ app.use('/auth', authRouter);
 app.use('/', homeRouter);
 
 // DB CONNECTION ========================================================
-mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
-    .then(() => console.log('Connected to db.'))
-    .catch(error => console.error('Could not connect to db'));
+require('./db')();
 
 // CONFIG ===============================================================
 console.log('App name: ' + config.get('name'));
