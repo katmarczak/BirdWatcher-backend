@@ -57,4 +57,6 @@ console.log('App name: ' + config.get('name'));
 // START SERVER =========================================================
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Listening on a port ${port}...`));
+const server = app.listen(port, () => console.log(`Listening on a port ${port}...`));
+
+module.exports = server;
