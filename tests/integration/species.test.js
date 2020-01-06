@@ -8,7 +8,7 @@ const endpoint = '/species';
 describe(`${endpoint}`, () => {
     beforeEach(() => { server = require('../../index'); });
     afterEach(async () => { 
-        server.close(); 
+        await server.close(); 
         await Species.remove({});
     });
 

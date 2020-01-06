@@ -1,13 +1,13 @@
 const request = require('supertest');
 const { User } = require('../../models/user');
-let server;
+
 
 const endpoint = '/users';
 
 describe(`${endpoint}`, () => {
     beforeEach(() => { server = require('../../index'); });
     afterEach(async () => { 
-        server.close(); 
+        await server.close(); 
         await User.remove({});
     });
 
@@ -37,7 +37,7 @@ describe(`${endpoint}`, () => {
             const response = await request(server).get(`${endpoint}/${user._id}`);
 
             expect(response.status).toBe(200);
-            expect(response.body).toHaveProperty(username, 'name1');
+            expect(response.body).toHaveProperty('username', 'name1');
         });
 
         it('should not return 200 if id is invalid', async() => {
@@ -60,10 +60,10 @@ describe(`${endpoint}`, () => {
             expect(response.status).toBe(400);
         });
 
-        it('should return 400 if password is less than 8 chars long', async () => {
+        it('should return 400 if password is too short', async () => {
             const response = await request(server)
                 .post(`${endpoint}`)
-                .send({ username: 'name1', email: 'email1@domain.com', password: '1234567' });
+                .send({ username: 'name1', email: 'email1@domain.com', password: '1' });
 
             expect(response.status).toBe(400);
         });
