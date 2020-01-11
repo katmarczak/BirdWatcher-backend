@@ -11,7 +11,7 @@ const speciesSchema = new mongoose.Schema({
 const Species = mongoose.model('Species', speciesSchema);
 
 function validateSpecies(species) {
-    const schema = {
+    const schema = Joi.object({
         commonName: Joi.string()
             .min(3)
             .max(255)
@@ -26,9 +26,9 @@ function validateSpecies(species) {
         AERCcategoryPL: Joi.string()
             .length(1)
             .uppercase()
-    };
+    });
 
-    return Joi.validate(species, schema);
+    return schema.validate(species);
 }
 
 module.exports.speciesSchema = speciesSchema;
