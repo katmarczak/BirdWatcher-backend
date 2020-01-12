@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage --maxWorkers=1"
+    "test": "jest --verbose --coverage --maxWorkers=1"
   },
   "jest" : {
     "modulePaths": ["<rootDir>", "../.."]

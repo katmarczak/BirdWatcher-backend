@@ -1,9 +1,14 @@
 const request = require('supertest');
 const { Species } = require('../../models/species');
 const { User } = require('../../models/user');
+const { disconnect } = require('../../db');
 let server;
 
 const endpoint = '/species';
+
+afterAll(async () => {
+    await disconnect();
+});
 
 describe(`${endpoint}`, () => {
     beforeEach(() => { server = require('../../index'); });

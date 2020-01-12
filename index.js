@@ -49,7 +49,8 @@ app.use('/auth', authRouter);
 app.use('/', homeRouter);
 
 // DB CONNECTION ========================================================
-require('./db')();
+const { connect } = require('./db');
+connect();
 
 // CONFIG ===============================================================
 console.log('App name: ' + config.get('name'));
