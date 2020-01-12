@@ -6,6 +6,9 @@
   "scripts": {
     "test": "jest --watchAll --verbose --coverage --maxWorkers=1"
   },
+  "jest" : {
+    "modulePaths": ["<rootDir>", "../.."]
+  },
   "author": "KNecka",
   "license": "ISC",
   "dependencies": {
