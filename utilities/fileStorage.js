@@ -66,7 +66,7 @@ function getUserAvatarPath(userId, callback) {
     fs.readdir(`${baseFolder}/images/user_photos/${userId}/avatar`, { withFileTypes: true },
         function (error, filenames) {
             if (error) {
-                console.log(error);
+                // console.log(error); TODO replace with a persistent logging system
                 return callback(undefined);
             }
             if (filenames[0]) {

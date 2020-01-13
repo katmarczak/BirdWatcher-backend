@@ -23,8 +23,8 @@ describe(`${endpoint}`, () => {
 
     afterEach(async () => {
         await server.close();
-        await Observation.remove({});
-        await Species.remove({});
+        await Observation.deleteMany({});
+        await Species.deleteMany({});
     });
 
     describe('GET /', () => {

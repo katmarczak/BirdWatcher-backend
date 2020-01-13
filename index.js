@@ -53,7 +53,7 @@ const { connect } = require('./db');
 connect();
 
 // CONFIG ===============================================================
-console.log('App name: ' + config.get('name'));
+// console.log('App name: ' + config.get('name'));
 
 // START SERVER =========================================================
 const port = process.env.PORT || 3000;

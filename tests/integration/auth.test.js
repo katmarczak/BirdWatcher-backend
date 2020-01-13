@@ -13,7 +13,7 @@ afterAll(async () => {
 describe('Authentication middleware', () => {
     beforeEach(() => { server = require('../../index'); })
     afterEach(async () => {
-        await Species.remove({});
+        await Species.deleteMany({});
         await server.close();
     });
 

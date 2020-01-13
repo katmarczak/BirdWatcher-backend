@@ -14,7 +14,7 @@ describe(`${endpoint}`, () => {
     beforeEach(() => { server = require('../../../index'); });
     afterEach(async () => { 
         await server.close(); 
-        await Species.remove({});
+        await Species.deleteMany({});
     });
 
     describe('GET /', () => {
