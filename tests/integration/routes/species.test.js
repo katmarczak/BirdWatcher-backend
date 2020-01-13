@@ -1,7 +1,7 @@
 const request = require('supertest');
-const { Species } = require('../../models/species');
-const { User } = require('../../models/user');
-const { disconnect } = require('../../db');
+const { Species } = require('../../../models/species');
+const { User } = require('../../../models/user');
+const { disconnect } = require('../../../db');
 let server;
 
 const endpoint = '/species';
@@ -11,7 +11,7 @@ afterAll(async () => {
 });
 
 describe(`${endpoint}`, () => {
-    beforeEach(() => { server = require('../../index'); });
+    beforeEach(() => { server = require('../../../index'); });
     afterEach(async () => { 
         await server.close(); 
         await Species.remove({});
