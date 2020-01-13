@@ -7,7 +7,8 @@
     "test": "jest --verbose --coverage --maxWorkers=1"
   },
   "jest" : {
-    "modulePaths": ["<rootDir>", "../.."]
+    "modulePaths": ["<rootDir>", "../.."],
+    "testEnvironment": "node"
   },
   "author": "KNecka",
   "license": "ISC",
