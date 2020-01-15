@@ -58,6 +58,6 @@ connect();
 // START SERVER =========================================================
 const port = process.env.PORT || 3000;
 
-const server = app.listen(port, () => console.log(`Listening on a port ${port}...`));
+const server = app.listen(port, () => console.log(`App: ${config.get('name')} listening on a port ${port}...`));
 
 module.exports = server;
