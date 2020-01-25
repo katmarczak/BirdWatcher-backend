@@ -27,6 +27,54 @@ describe(`${endpoint}`, () => {
         await Species.deleteMany({});
     });
 
+    describe('/search GET /', () => {
+        beforeEach(async () => {
+            const obj = {
+                owner: { _id: userId, username: 'name' },
+                species: species,
+                date: "2019-10-31",
+                exactLocation: { type: "Point", coordinates: [1, -1] }
+            };
+            const observation = new Observation(obj);
+            await observation.save();
+        });
+
+        afterEach(async () => {
+            await Observation.deleteMany({});
+        });
+
+        it('should return observations for a given username', async () => {
+            const searchCriteria = { username: 'name' };
+
+            const response = await request(server).get(`${endpoint}/search`)
+                .query(searchCriteria);
+            
+            expect(response.status).toBe(200);
+            expect(response.body[0].owner.username).toEqual('name');
+        });
+
+        it('should return observations for a given species', async () => {
+            const searchCriteria = { species: 'Common' };
+
+            const response = await request(server).get(`${endpoint}/search`)
+                .query(searchCriteria);
+            
+            expect(response.status).toBe(200);
+            expect(response.body[0].species.commonName).toEqual('Common');
+        });
+
+        it('should return observation fulfilling multiple criteria', async () => {
+            const searchCriteria = { username: 'name', species: 'Scientific' };
+
+            const response = await request(server).get(`${endpoint}/search`)
+                .query(searchCriteria);
+            
+            expect(response.status).toBe(200);
+            expect(response.body[0].owner.username).toEqual('name');
+            expect(response.body[0].species.scientificName).toEqual('Scientific');
+        });
+    })
+
     describe('GET /', () => {
         it('should return all observations', async () => {
             await Observation.collection.insertMany([
@@ -38,17 +86,16 @@ describe(`${endpoint}`, () => {
 
             expect(response.status).toBe(200);
             expect(response.body.length).toBe(2);
-            //expect(response.body).toContainEqual({ owner: { _id: fakeUserId, username: 'name' }, species: species, date: "2019-10-31", exactLocation: { coordinates: [1, -1] } });
         });
     });
 
     describe('GET /:id', () => {
         it('should return single observation', async () => {
-            const obj = { 
-                owner: { _id: userId, username: 'name' }, 
-                species: species, 
-                date: "2019-10-31", 
-                exactLocation: { type: "Point", coordinates: [1, -1] } 
+            const obj = {
+                owner: { _id: userId, username: 'name' },
+                species: species,
+                date: "2019-10-31",
+                exactLocation: { type: "Point", coordinates: [1, -1] }
             };
             const observation = new Observation(obj);
             await observation.save();
@@ -56,17 +103,14 @@ describe(`${endpoint}`, () => {
             const response = await request(server).get(`${endpoint}/${observation._id}`);
 
             expect(response.status).toBe(200);
-            // delete obj.date;
-            // expect(response.body).toMatchObject(obj);
-            //expect(response.body.date).toEqual(expect.stringContaining("2019-10-31"));
         });
 
         it('should not return 200 if id is invalid', async () => {
-            const obj = { 
-                owner: { _id: userId, username: 'name' }, 
-                species: species, 
-                date: "2019-10-31", 
-                exactLocation: { type: "Point", coordinates: [1, -1] } 
+            const obj = {
+                owner: { _id: userId, username: 'name' },
+                species: species,
+                date: "2019-10-31",
+                exactLocation: { type: "Point", coordinates: [1, -1] }
             };
             const observation = new Observation(obj);
             await observation.save();
