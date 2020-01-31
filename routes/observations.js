@@ -27,7 +27,7 @@ router.get('/search', asyncMiddleware(async (request, response) => {
 function buildFilter(query) {
     let filter = { visible: true };
     if (query.userId) filter['owner._id'] = { _id: query.userId };
-    else if (query.username) filter['owner.username'] = { username: query.username };
+    else if (query.username) filter['owner.username'] = query.username;
     if (query.species) {
         const speciesRegExp = new RegExp(`.*${query.species}.*`, 'i');
         filter.$or = [{ 'species.commonName': { $regex: speciesRegExp } }, { 'species.scientificName': { $regex: speciesRegExp } }];

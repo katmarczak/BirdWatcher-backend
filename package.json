@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose --coverage --maxWorkers=1"
+  },
+  "jest" : {
+    "modulePaths": ["<rootDir>", "../.."],
+    "testEnvironment": "node"
   },
   "author": "KNecka",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^16.1.8",
     "bcrypt": "^3.0.3",
     "config": "^3.0.1",
     "debug": "^4.1.0",
@@ -23,6 +28,8 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "jshint": "^2.9.6"
+    "jest": "^24.9.0",
+    "jshint": "^2.9.6",
+    "supertest": "^4.0.2"
   }
 }

@@ -1,5 +1,4 @@
 const config = require('config');
-const mongoose = require('mongoose');
 
 const startUpDebugger = require('debug')('app:startup')
 const helmet = require('helmet');
@@ -13,7 +12,7 @@ const usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const speciesRouter = require('./routes/species');
 const authRouter = require('./routes/auth');
-const checkUser = require('./middleware/checkUser');
+const checkUser = require('./middleware/checkuser');
 
 if(!config.get('jwtPrivateKey')) {
     console.error('Cannot start app: Environment variable \'jwtPrivateKey\' is not defined');
@@ -50,14 +49,15 @@ app.use('/auth', authRouter);
 app.use('/', homeRouter);
 
 // DB CONNECTION ========================================================
-mongoose.connect('mongodb://localhost/birdwatcher', { useNewUrlParser: true })
-    .then(() => console.log('Connected to db.'))
-    .catch(error => console.error('Could not connect to db'));
+const { connect } = require('./db');
+connect();
 
 // CONFIG ===============================================================
-console.log('App name: ' + config.get('name'));
+// console.log('App name: ' + config.get('name'));
 
 // START SERVER =========================================================
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Listening on a port ${port}...`));
+const server = app.listen(port, () => console.log(`App: ${config.get('name')} listening on a port ${port}...`));
+
+module.exports = server;

@@ -1,7 +1,6 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const router = express.Router();
-const { Species } = require('../models/species');
+const { Species, validateSpecies } = require('../models/species');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/async');
 
@@ -18,6 +17,9 @@ router.get('/:id', asyncMiddleware(async (request, response) => {
 }));
 
 router.post('/', auth, asyncMiddleware(async (request, response) => {
+    const { error } = validateSpecies(request.body);
+    if (error) return response.status(400).send(error.details[0].message);
+
     let species = new Species({
         commonName: request.body.commonName,
         scientificName: request.body.scientificName

@@ -31,6 +31,7 @@ router.post('/avatar', auth, AvatarUploader, asyncMiddleware(async (request, res
 router.post('/', asyncMiddleware(async (request, response) => {
     let user = await User.findOne({ email: request.body.email });
     if(user) return response.status(400).send('User with this email already exists');
+    if(request.body.password && request.body.password.length < 8) return response.status(400).send('Password too short');
 
     const hashedPassword = await bcrypt.hash(request.body.password, 10);
 

@@ -5,7 +5,7 @@ const config = require('config');
 const userSchema = new mongoose.Schema({
     username: { type: String, unique: true, required: true, minlength: 3, maxlength: 32 },
     email: { type: String, unique: true, required: true },
-    password: { type: String, required: true, minlength: 8 },
+    password: { type: String, required: true },
     registeredOn: { type: Date, default: Date.now },
     lastLoggedIn: Date,
     role: String,

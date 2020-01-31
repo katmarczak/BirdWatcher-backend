@@ -1,4 +1,4 @@
 node_modules/
 edu_resources/
-uploads/
-public/*
+public/images/user_photos
+coverage/
